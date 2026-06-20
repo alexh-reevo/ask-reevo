@@ -38,7 +38,7 @@ const crossOpacity = (ring: number) => (ring < 2 ? 1 : 0.3)
 
 /** A compact 3×3 dot-matrix spinner — ripples while `active`, a static bloom otherwise. */
 export function Spinner({
-  size = 15,
+  size = 16,
   dotSize = 3,
   color = "#F472B6",
   speed = 1,

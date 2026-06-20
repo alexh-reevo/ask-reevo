@@ -21,7 +21,7 @@ const STATUSES = [
 ]
 
 // Static spinners at increasing sizes, to preview how it scales.
-const SIZES = [15, 24, 32, 40]
+const SIZES = [16, 24, 32, 40]
 
 function StatusRow({ color, label }: { color: string; label: string }) {
   return (

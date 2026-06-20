@@ -12,12 +12,12 @@ const COLORS: ColorOption[] = [
   { name: "Black", hex: "#121212" },
 ]
 
-// The "active" agent states — Thinking plus a few whimsical ones.
+// The "active" agent states — what a CRM assistant does while working.
 const STATUSES = [
-  "Thinking…",
-  "Discombobulating…",
-  "Percolating…",
-  "Cogitating…",
+  "Searching your contacts…",
+  "Analyzing the pipeline…",
+  "Drafting a follow-up…",
+  "Updating the record…",
 ]
 
 // Static spinners at increasing sizes, to preview how it scales.
@@ -27,7 +27,7 @@ function StatusRow({ color, label }: { color: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
       <Spinner color={color} active />
-      <span className="text-sm font-medium">
+      <span className="text-sm">
         <ShimmerText>{label}</ShimmerText>
       </span>
     </div>

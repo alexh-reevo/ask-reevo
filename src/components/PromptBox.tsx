@@ -1,14 +1,21 @@
-import { Spinner } from "./Spinner"
+import { Loader } from "./Loader"
+import type { SpinnerVariant } from "./Loader"
 
 /** The "Ask Reevo anything" input — idle loader on the left, send button on the right. */
-export function PromptBox({ color }: { color: string }) {
+export function PromptBox({
+  color,
+  variant,
+}: {
+  color: string
+  variant: SpinnerVariant
+}) {
   return (
     <div className="flex items-center gap-3 rounded-xl ring ring-black/10 bg-white p-2 shadow-md shadow-neutral-900/[0.07]">
       <div className="flex pl-2">
-        <Spinner
+        <Loader
+          variant={variant}
           color={color}
-          // size={16}
-          // dotSize={4}
+          size={variant === "halftone" ? 20 : 16}
           active={false}
           ariaLabel="Reevo"
         />

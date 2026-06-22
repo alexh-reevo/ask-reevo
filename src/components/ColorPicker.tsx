@@ -26,7 +26,7 @@ export function ColorPicker({
         className="flex items-center gap-2 rounded-lg ring ring-black/10 bg-white pr-3 pl-2.5 py-1.5 text-sm font-medium text-neutral-700 shadow-sm transition-colors hover:bg-neutral-50"
       >
         <span
-          className="h-3.5 w-3.5 rounded-full ring-1 ring-inset ring-black/10"
+          className="size-3 rounded-full ring-1 ring-inset ring-black/10"
           style={{ background: current.hex }}
         />
         {current.name}
@@ -68,10 +68,10 @@ export function ColorPicker({
                       onChange(c.hex)
                       setOpen(false)
                     }}
-                    className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100"
+                    className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100"
                   >
                     <span
-                      className="h-3.5 w-3.5 rounded-full ring-1 ring-inset ring-black/10"
+                      className="size-3 rounded-full ring-1 ring-inset ring-black/10"
                       style={{ background: c.hex }}
                     />
                     <span className="flex-1 text-left">{c.name}</span>

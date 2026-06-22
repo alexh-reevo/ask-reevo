@@ -32,6 +32,10 @@ const OPACITY_KEYFRAMES = [0.1, 0.98, 0.32, 0.7824, 0.1]
 const OPACITY_TIMES = [0, 0.28, 0.56, 0.78, 1]
 const CYCLE = 1.5 // seconds (--dmx-cycle: 1500ms)
 
+// Idle "breathing" shimmer: a slow, low-amplitude opacity wave so the static
+// mark still feels alive. Sweeps diagonally (delay by row + col).
+const IDLE_CYCLE = 2.8
+
 // Static "cross": the center + edge dots (Manhattan ring < 2) form a plus at full
 // opacity; the corners (ring 2) stay dim.
 const crossOpacity = (ring: number) => (ring < 2 ? 1 : 0.3)
@@ -52,7 +56,6 @@ export function Spinner({
   const dot = dotSize
   const gap = Math.max(0, (size - dot * 3) / 2)
   const duration = CYCLE / speed
-  const animate = active && !reducedMotion
 
   return (
     <span
@@ -68,7 +71,7 @@ export function Spinner({
         verticalAlign: "middle",
       }}
     >
-      {DOTS.map(({ ring }, i) => {
+      {DOTS.map(({ row, col, ring }, i) => {
         const dotStyle = {
           width: dot,
           height: dot,
@@ -76,7 +79,8 @@ export function Spinner({
           background: "currentColor",
         } as const
 
-        if (!animate) {
+        // Reduced motion → fully static cross, no animation.
+        if (reducedMotion) {
           return (
             <span
               key={i}
@@ -86,22 +90,43 @@ export function Spinner({
           )
         }
 
-        // Matches `.dmx-ripple-echo`: delay = (ring·0.14 + parity·0.03)·cycle.
-        const delay = (ring * 0.14 + (ring % 2) * 0.03) * duration
+        if (active) {
+          // Matches `.dmx-ripple-echo`: delay = (ring·0.14 + parity·0.03)·cycle.
+          const delay = (ring * 0.14 + (ring % 2) * 0.03) * duration
+          return (
+            <motion.span
+              key={i}
+              aria-hidden="true"
+              style={dotStyle}
+              initial={{ opacity: OPACITY_KEYFRAMES[0] }}
+              animate={{ opacity: OPACITY_KEYFRAMES }}
+              transition={{
+                duration,
+                times: OPACITY_TIMES,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay,
+              }}
+            />
+          )
+        }
 
+        // Idle: hold the cross shape, but breathe with a slow diagonal shimmer.
+        const base = crossOpacity(ring)
+        const idleDelay = ((row + col) / 4) * 0.66 * IDLE_CYCLE
         return (
           <motion.span
             key={i}
             aria-hidden="true"
             style={dotStyle}
-            initial={{ opacity: OPACITY_KEYFRAMES[0] }}
-            animate={{ opacity: OPACITY_KEYFRAMES }}
+            initial={{ opacity: base }}
+            animate={{ opacity: [base, base * 0.5, base] }}
             transition={{
-              duration,
-              times: OPACITY_TIMES,
+              duration: IDLE_CYCLE,
+              times: [0, 0.5, 1],
               repeat: Infinity,
               ease: "easeInOut",
-              delay,
+              delay: idleDelay,
             }}
           />
         )
